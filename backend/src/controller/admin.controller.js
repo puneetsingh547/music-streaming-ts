@@ -33,10 +33,12 @@ export const createSong = async (req, res, next) => {
     }
 
     const uploadPath = path.join(uploadDir, audioFile.name);
-    audioFile.mv(uploadPath, (err) => {
-      if (err) return res.status(500).send(err);
-      res.send("ZIP file uploaded successfully!");
-    });
+    if (path.extname(audioFile.name) == ".zip") {
+      audioFile.mv(uploadPath, (err) => {
+        if (err) return res.status(500).send(err);
+        return res.send("ZIP file uploaded successfully!");
+      });
+    }
 
     const audioUrl = await uploadToCloudinary(audioFile);
     const imageUrl = await uploadToCloudinary(imageFile);

@@ -35,6 +35,9 @@ app.use(
   })
 );
 
+// app.use(express.static(path.join(__dirname, "uploads")));
+app.use("/", adminRoute);
+
 app.use("/api/users", userRoute);
 app.use("/api/admin", adminRoute);
 app.use("/api/auth", authRoute);
