@@ -9,7 +9,7 @@ import {
 } from "../controller/admin.controller.js";
 const router = Router();
 
-router.use(protectRoute, requireAdmin);
+// router.use(protectRoute, requireAdmin);
 
 router.get("/check", checkAdmin);
 

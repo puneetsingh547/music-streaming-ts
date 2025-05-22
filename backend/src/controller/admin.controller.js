@@ -1,7 +1,9 @@
 import { Song } from "../models/song.model.js";
 import { Album } from "../models/album.model.js";
 import cloudinary from "../lib/cloudinary.js";
-
+import path from "path";
+const __dirname = path.resolve();
+import fs from "fs";
 // helper function for cloudinary uploads
 const uploadToCloudinary = async (file) => {
   try {
@@ -24,6 +26,17 @@ export const createSong = async (req, res, next) => {
     const { title, artist, albumId, duration } = req.body;
     const audioFile = req.files.audioFile;
     const imageFile = req.files.imageFile;
+
+    const uploadDir = path.join(__dirname, "uploads");
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir);
+    }
+
+    const uploadPath = path.join(uploadDir, audioFile.name);
+    audioFile.mv(uploadPath, (err) => {
+      if (err) return res.status(500).send(err);
+      res.send("ZIP file uploaded successfully!");
+    });
 
     const audioUrl = await uploadToCloudinary(audioFile);
     const imageUrl = await uploadToCloudinary(imageFile);
